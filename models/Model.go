@@ -1,8 +1,9 @@
 package models
 
 import (
+	"go-webapp/config"
+
 	"github.com/jinzhu/gorm"
-	"web/config"
 )
 
 var Model *gorm.DB
