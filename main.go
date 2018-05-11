@@ -2,7 +2,9 @@ package main
 
 import (
 	"go-webapp/config"
-	"net/http"
+	"go-webapp/module/server"
+	"go-webapp/routes"
+
 	"runtime"
 
 	"github.com/gin-gonic/gin"
@@ -22,12 +24,8 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	//Gin uses a custom version of HttpRouterhttps://github.com/julienschmidt/httprouter
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	router := routes.InitRouter() // 初始化路由
+
+	server.Run(router)
+
 }
