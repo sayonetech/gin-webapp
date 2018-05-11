@@ -3,7 +3,7 @@
 
 #### Environment Requirements
 
-- [GO >= 1.8](https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md)
+- GO >= 1.8
 
 ### Install
 
