@@ -1,4 +1,4 @@
-# Gin based  WebApp Project
+# Gin based REST API Project
 
 
 #### Environment Requirements
