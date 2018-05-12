@@ -38,8 +38,14 @@ make migrate
 ```
 ## TODO
 
-- [] Database/ORM
+- [x] Database/ORM
+- [x] Migration
+- [] Authentication
+- [] Session
+- [] ElasticSearch
+- [] Task Queue
+- [] SMTP
 - [] Middleware
 - [] GZip https://github.com/gin-contrib/gzip
 - [] Test
-- [] Cache/Session
+- [] Cache
