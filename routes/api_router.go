@@ -11,4 +11,8 @@ func registerAPIRouter(router *gin.Engine) {
 	api := router.Group("/api")
 	api.GET("/index", c.IndexApi)
 
+	v1 := router.Group("api/v1")
+	{
+		v1.POST("/register", c.Register)
+	}
 }
