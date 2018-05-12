@@ -1,4 +1,4 @@
-package controllers
+package auth
 
 import (
 	"github.com/gin-gonic/gin"
@@ -10,5 +10,9 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
+	//https://github.com/demo-apps/go-gin-app/blob/master/routes.go
+}
+
+func LogOut(c *gin.Context) {
 	//https://github.com/demo-apps/go-gin-app/blob/master/routes.go
 }

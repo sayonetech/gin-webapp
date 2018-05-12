@@ -2,6 +2,7 @@ package routes
 
 import (
 	c "go-webapp/controller"
+	"go-webapp/controller/auth"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,6 @@ func registerAPIRouter(router *gin.Engine) {
 
 	v1 := router.Group("api/v1")
 	{
-		v1.POST("/register", c.Register)
+		v1.POST("/register", auth.Register)
 	}
 }
