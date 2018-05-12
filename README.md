@@ -27,7 +27,7 @@ make build
 
 #### Run the Service
 ```
-make 
+make
 ```
 
 visit by browser: http://localhost:4000/api/index
@@ -40,5 +40,6 @@ make migrate
 
 - [] Database/ORM
 - [] Middleware
+- [] GZip https://github.com/gin-contrib/gzip
 - [] Test
 - [] Cache/Session
