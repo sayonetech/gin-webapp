@@ -44,11 +44,14 @@ make migrate
 - [] Session
 - [] ElasticSearch
 - [] Task Queue
-  - https://github.com/gocelery/gocelery
-  - https://github.com/RichardKnop/machinery
-  - https://eng.uber.com/cherami/
 - [] SMTP
 - [] Middleware
 - [] GZip https://github.com/gin-contrib/gzip
 - [] Test
 - [] Cache
+
+
+## Task Q
+  * https://github.com/gocelery/gocelery
+  * https://github.com/RichardKnop/machinery
+  * https://eng.uber.com/cherami/
