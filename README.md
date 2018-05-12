@@ -32,6 +32,10 @@ make
 
 visit by browser: http://localhost:4000/api/index
 
+#### Database Migration
+```
+make migrate
+```
 ## TODO
 
 - [] Database/ORM
