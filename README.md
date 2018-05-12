@@ -55,3 +55,6 @@ make migrate
   * https://github.com/gocelery/gocelery
   * https://github.com/RichardKnop/machinery
   * https://eng.uber.com/cherami/
+
+## Email
+ * https://github.com/go-gomail/gomail
