@@ -4,15 +4,15 @@ import (
 	"go-webapp/config"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var Model *gorm.DB
 
+// Read more about init() https://stackoverflow.com/questions/17733220/go-package-initialization
 func init() {
 	var err error
-	Model, err = gorm.Open("mysql", config.GetEnv().DATABASE_USERNAME+
-		":"+config.GetEnv().DATABASE_PASSWORD+"@tcp("+config.GetEnv().DATABASE_IP+
-		":"+config.GetEnv().DATABASE_PORT+")/"+config.GetEnv().DATABASE_NAME)
+	Model, err := gorm.Open("postgres", "host="+config.GetEnv().HOST+" port="+config.GetEnv().DATABASE_PORT+" user="+config.GetEnv().DATABASE_USERNAME+" dbname="+config.GetEnv().DATABASE_NAME+" password="+config.GetEnv().DATABASE_PASSWORD)
 
 	if err != nil {
 		panic(err)

@@ -5,6 +5,7 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BINARY_NAME=go-webapp
+BINARY_NAME_MIGRATE=go-webapp-migrate
 BINARY_UNIX=$(BINARY_NAME)_unix
 
 all: run
@@ -38,7 +39,8 @@ cross:
 
 
 migrate:
-	#TODO
+	$(GOBUILD) -o ./build/$(BINARY_NAME_MIGRATE) -v ./migration/migration.go
+	./build/$(BINARY_NAME_MIGRATE)
 
 loadfixtures:
 	#TODO

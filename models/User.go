@@ -1,12 +1,22 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"time"
 
+	"github.com/jinzhu/gorm"
+)
+
+//User ...User Model
 type User struct {
 	gorm.Model
-	Name   string
-	Avatar string
-	Sex    int
+	Email     string `gorm:"type:varchar(100);unique_index"`
+	UserName  string
+	FirstName string
+	LastName  string
+	IsActive  bool
+	Password  string
+	Phone     string
+	LastLogin time.Time
 }
 
 func (User) TableName() string {

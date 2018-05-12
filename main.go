@@ -1,5 +1,9 @@
 package main
 
+//migrate to https://github.com/eurie-inc/echo-sample
+//https://github.com/pangpanglabs/echosample
+//https://github.com/kyawmyintthein/golangRestfulAPISample
+
 import (
 	"go-webapp/config"
 	"go-webapp/module/server"
