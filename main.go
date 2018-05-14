@@ -29,6 +29,8 @@ func main() {
 	// Set maximum number of CPUs that can be executing simultaneously with the number of logical CPUs usable by the current process
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
+	//TODO Enable GZIP
+
 	if config.GetEnv().DEBUG {
 		gin.SetMode(gin.DebugMode)
 	} else {
