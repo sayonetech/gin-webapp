@@ -29,7 +29,7 @@ func (User) TableName() string {
 // Golang bcrypt doc: https://godoc.org/golang.org/x/crypto/bcrypt
 // You can change the value in bcrypt.DefaultCost to adjust the security index.
 // 	err := userModel.setPassword("password0")
-func (u *User) setPassword(password string) error {
+func (u *User) SetPassword(password string) error {
 	if len(password) == 0 {
 		return errors.New("password should not be empty!")
 	}
@@ -42,7 +42,7 @@ func (u *User) setPassword(password string) error {
 
 // Database will only save the hashed string, you should check it by util function.
 // 	if err := serModel.checkPassword("password0"); err != nil { password error }
-func (u *User) checkPassword(password string) error {
+func (u *User) CheckPassword(password string) error {
 	bytePassword := []byte(password)
 	byteHashedPassword := []byte(u.Password)
 	return bcrypt.CompareHashAndPassword(byteHashedPassword, bytePassword)
