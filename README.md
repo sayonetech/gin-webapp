@@ -36,6 +36,11 @@ visit by browser: http://localhost:4000/api/index
 ```
 make migrate
 ```
+
+#### Local Deployment
+
+We use [flush](https://github.com/pilu/fresh) Build and (re)start go web apps after saving/creating/deleting source files.
+
 ## TODO
 
 - [x] Database/ORM
