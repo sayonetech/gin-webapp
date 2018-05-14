@@ -93,6 +93,18 @@
 			"revisionTime": "2018-04-07T10:30:00Z"
 		},
 		{
+			"checksumSHA1": "oCH3J96RWvO8W4xjix47PModpio=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "2d027ae1dddd4694d54f7a8b6cbe78dca8720226",
+			"revisionTime": "2018-05-09T20:48:04Z"
+		},
+		{
+			"checksumSHA1": "oVPHWesOmZ02vLq2fglGvf+AMgk=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "2d027ae1dddd4694d54f7a8b6cbe78dca8720226",
+			"revisionTime": "2018-05-09T20:48:04Z"
+		},
+		{
 			"checksumSHA1": "HlNJphC1tQkyRMTsqojxpRx5pKE=",
 			"path": "golang.org/x/sys/unix",
 			"revision": "7dfd1290c7917b7ba22824b9d24954ab3002fe24",

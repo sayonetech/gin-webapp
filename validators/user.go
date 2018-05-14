@@ -3,6 +3,7 @@ package validators
 import (
 	"go-webapp/common"
 	"go-webapp/models"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,9 +17,9 @@ type UserModelValidator struct {
 		Username  string `form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
 		Email     string `form:"email" json:"email" binding:"exists,email"`
 		Password  string `form:"password" json:"password" binding:"exists,min=8,max=255"`
-		FirstName string `form:"first_name" json:"first_name" binding:"min=8,max=255"`
-		LastName  string `form:"last_name" json:"image" binding:"min=8,max=255"`
-		Phone     string `form:"phone" json:"image" binding:"min=10,max=10"`
+		FirstName string `form:"first_name" json:"first_name"`
+		LastName  string `form:"last_name" json:"last_name"`
+		Phone     string `form:"phone" json:"phone"`
 	} `json:"user"`
 	UserModel models.User `json:"-"`
 }
@@ -29,6 +30,7 @@ type UserModelValidator struct {
 func (self *UserModelValidator) Bind(c *gin.Context) error {
 	err := common.Bind(c, self)
 	if err != nil {
+		log.Error("oops, something was too hard", err)
 		return err
 	}
 	self.UserModel.UserName = self.User.Username
