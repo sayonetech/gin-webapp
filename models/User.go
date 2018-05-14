@@ -48,6 +48,13 @@ func (u *User) CheckPassword(password string) error {
 	return bcrypt.CompareHashAndPassword(byteHashedPassword, bytePassword)
 }
 
+// You could input an UserModel which will be saved in database returning with error info
+// 	if err := SaveOne(&userModel); err != nil { ... }
+func SaveOne(data interface{}) error {
+	err := Model.Save(data).Error
+	return err
+}
+
 //Refer https://github.com/demo-apps/go-gin-app
 //https://github.com/gothinkster/golang-gin-realworld-example-app/blob/master/users/models.go
 //https://medium.com/@jcox250/password-hash-salt-using-golang-b041dc94cb72

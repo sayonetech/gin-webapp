@@ -20,7 +20,7 @@ type UserModelValidator struct {
 		LastName  string `form:"last_name" json:"image" binding:"min=8,max=255"`
 		Phone     string `form:"phone" json:"image" binding:"min=10,max=10"`
 	} `json:"user"`
-	userModel models.User `json:"-"`
+	UserModel models.User `json:"-"`
 }
 
 // There are some difference when you create or update a model, you need to fill the DataModel before
@@ -31,14 +31,14 @@ func (self *UserModelValidator) Bind(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	self.userModel.UserName = self.User.Username
-	self.userModel.Email = self.User.Email
-	self.userModel.FirstName = self.User.FirstName
-	self.userModel.LastName = self.User.LastName
-	self.userModel.Phone = self.User.Phone
+	self.UserModel.UserName = self.User.Username
+	self.UserModel.Email = self.User.Email
+	self.UserModel.FirstName = self.User.FirstName
+	self.UserModel.LastName = self.User.LastName
+	self.UserModel.Phone = self.User.Phone
 
 	if self.User.Password != common.NBRandomPassword {
-		self.userModel.SetPassword(self.User.Password)
+		self.UserModel.SetPassword(self.User.Password)
 	}
 
 	return nil
@@ -47,7 +47,6 @@ func (self *UserModelValidator) Bind(c *gin.Context) error {
 // You can put the default value of a Validator here
 func NewUserModelValidator() UserModelValidator {
 	userModelValidator := UserModelValidator{}
-	//userModelValidator.User.Email ="w@g.cn"
 	return userModelValidator
 }
 
@@ -60,28 +59,4 @@ func NewUserModelValidatorFillWith(userModel models.User) UserModelValidator {
 	userModelValidator.User.Phone = userModel.Phone
 
 	return userModelValidator
-}
-
-type LoginValidator struct {
-	User struct {
-		Email    string `form:"email" json:"email" binding:"exists,email"`
-		Password string `form:"password"json:"password" binding:"exists,min=8,max=255"`
-	} `json:"user"`
-	userModel models.User `json:"-"`
-}
-
-func (self *LoginValidator) Bind(c *gin.Context) error {
-	err := common.Bind(c, self)
-	if err != nil {
-		return err
-	}
-
-	self.userModel.Email = self.User.Email
-	return nil
-}
-
-// You can put the default value of a Validator here
-func NewLoginValidator() LoginValidator {
-	loginValidator := LoginValidator{}
-	return loginValidator
 }
