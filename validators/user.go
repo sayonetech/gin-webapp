@@ -3,9 +3,9 @@ package validators
 import (
 	"go-webapp/common"
 	"go-webapp/models"
-	"log"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 // *ModelValidator containing two parts:
@@ -29,8 +29,12 @@ type UserModelValidator struct {
 // BTW, you can put your general binding logic here such as setting password.
 func (self *UserModelValidator) Bind(c *gin.Context) error {
 	err := common.Bind(c, self)
+
 	if err != nil {
-		log.Error("oops, something was too hard", err)
+		log.WithFields(log.Fields{
+			"self": self,
+		}).Info("Error parsing", err)
+
 		return err
 	}
 	self.UserModel.UserName = self.User.Username

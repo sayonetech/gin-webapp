@@ -8,11 +8,18 @@ import (
 	"go-webapp/config"
 	"go-webapp/module/server"
 	"go-webapp/routes"
-
 	"runtime"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 )
+
+func init() {
+
+	// Only log the warning severity or above.
+	log.SetLevel(log.DebugLevel)
+}
 
 /**
 * run main.go(go run main.go) and visit 0.0.0.0:8080/ping on browser

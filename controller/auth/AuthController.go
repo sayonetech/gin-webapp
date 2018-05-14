@@ -13,7 +13,6 @@ import (
 func Register(context *gin.Context) {
 	//https://medium.com/@etiennerouzeaud/how-to-create-a-basic-restful-api-in-go-c8e032ba3181
 	//https://github.com/gothinkster/golang-gin-realworld-example-app/blob/master/users/routers.go
-
 	userModelValidator := validators.NewUserModelValidator()
 	if err := userModelValidator.Bind(context); err != nil {
 		context.JSON(http.StatusUnprocessableEntity, common.NewValidatorError(err))
