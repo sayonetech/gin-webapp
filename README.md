@@ -45,6 +45,7 @@ We use [flush](https://github.com/pilu/fresh) Build and (re)start go web apps af
 
 - [x] Database/ORM
 - [x] Migration
+- [x] Swagger Doc
 - [] Authentication
 - [] Session
 - [] ElasticSearch

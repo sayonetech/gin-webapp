@@ -140,11 +140,7 @@
 			"revision": "5420a8b6744d3b0345ab293f6fcba19c978f1183",
 			"revisionTime": "2018-03-28T19:50:20Z"
 		},
-		{
-			"checksumSHA1": "PpU4Sf1Mr392lN2ZtqG6DxrFIJg=",
-			"path": "web/config",
-			"revision": ""
-		}
+		
 	],
 	"rootPath": "go-webapp"
 }
