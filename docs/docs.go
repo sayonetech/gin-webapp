@@ -25,7 +25,7 @@ var doc = `{
         },
         "version": "1.0"
     },
-    "host": "petstore.swagger.io",
+    "host": "localhost:4000",
     "basePath": "/api",
     "paths": {
         "/v1/register": {
@@ -37,16 +37,49 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Add a new pet to the store",
+                "summary": "Add a new user",
                 "parameters": [
                     {
-                        "description": "Some ID",
-                        "name": "some_id",
-                        "in": "path",
+                        "description": "username",
+                        "name": "username",
+                        "in": "formData",
                         "required": true,
-                        "schema": {
-                            "type": "int"
-                        }
+                        "type": "string"
+                    },
+										{
+                        "description": "email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+										{
+                        "description": "first name",
+                        "name": "first_name",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+										{
+                        "description": "last name",
+                        "name": "last_name",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+										{
+                        "description": "phone",
+                        "name": "phone",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+										{
+                        "description": "password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -56,7 +89,7 @@ var doc = `{
                             "type": "string"
                         }
                     },
-                  
+
                 }
             }
         },
