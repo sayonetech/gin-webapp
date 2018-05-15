@@ -39,7 +39,7 @@ make migrate
 
 #### Local Deployment
 
-We use [flush](https://github.com/pilu/fresh) Build and (re)start go web apps after saving/creating/deleting source files.
+We use [fresh](https://github.com/pilu/fresh) Build and (re)start go web apps after saving/creating/deleting source files.
 
 ## TODO
 

@@ -14,10 +14,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//Run ... The Server
 func Run(router *gin.Engine) {
 	srv := &http.Server{
-		Addr:    ":" + config.GetEnv().SERVER_PORT,
-		Handler: router,
+		Addr:         ":" + config.GetEnv().SERVER_PORT,
+		Handler:      router,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
 	}
 
 	go func() {
