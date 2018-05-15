@@ -40,6 +40,14 @@ make migrate
 #### Local Deployment
 
 We use [fresh](https://github.com/pilu/fresh) Build and (re)start go web apps after saving/creating/deleting source files.
+#### Installation
+
+    go get github.com/pilu/fresh
+
+
+Start fresh:
+
+    fresh
 
 ## TODO
 
