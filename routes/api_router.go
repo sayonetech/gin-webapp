@@ -15,5 +15,6 @@ func registerAPIRouter(router *gin.Engine) {
 	v1 := router.Group("api/v1")
 	{
 		v1.POST("/register", auth.Register)
+		v1.POST("/login", auth.UserLogin)
 	}
 }

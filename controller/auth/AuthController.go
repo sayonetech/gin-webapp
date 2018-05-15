@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"go-webapp/common"
 	"go-webapp/models"
 	"go-webapp/serializer"
@@ -28,8 +29,25 @@ func Register(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"user": serializer.Response()})
 }
 
-func Login(c *gin.Context) {
-	//https://github.com/demo-apps/go-gin-app/blob/master/routes.go
+func UserLogin(context *gin.Context) {
+	loginValidator := validators.NewLoginValidator()
+	if err := loginValidator.Bind(context); err != nil {
+		context.JSON(http.StatusUnprocessableEntity, common.NewValidatorError(err))
+		return
+	}
+	userModel, err := models.FindUser(&models.User{Email: loginValidator.Email})
+
+	if err != nil {
+		context.JSON(http.StatusForbidden, common.NewError("login", errors.New("Not Registered email or invalid password")))
+		return
+	}
+
+	if userModel.CheckPassword(loginValidator.Password) != nil {
+		context.JSON(http.StatusForbidden, common.NewError("login", errors.New("Not Registered email or invalid password")))
+		return
+	}
+	//Manage session here
+	context.JSON(http.StatusOK, gin.H{})
 }
 
 func LogOut(c *gin.Context) {

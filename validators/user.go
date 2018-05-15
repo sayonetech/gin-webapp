@@ -64,3 +64,24 @@ func NewUserModelValidatorFillWith(userModel models.User) UserModelValidator {
 
 	return userModelValidator
 }
+
+type LoginValidator struct {
+	Email     string      `form:"email" json:"email" binding:"exists,email"`
+	Password  string      `form:"password"json:"password" binding:"exists,min=8,max=255"`
+	UserModel models.User `json:"-"`
+}
+
+func (self *LoginValidator) Bind(c *gin.Context) error {
+	err := common.Bind(c, self)
+	if err != nil {
+		return err
+	}
+
+	self.UserModel.Email = self.Email
+	return nil
+}
+
+func NewLoginValidator() LoginValidator {
+	loginValidator := LoginValidator{}
+	return loginValidator
+}
