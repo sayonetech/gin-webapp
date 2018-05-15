@@ -4,7 +4,6 @@ import (
 	"go-webapp/config"
 	"go-webapp/handle"
 
-	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	// proxy "github.com/chenhg5/gin-reverseproxy"
@@ -15,7 +14,7 @@ import (
 //InitRouter Initialise router
 func InitRouter() *gin.Engine {
 	route := gin.New()
-	route.Use(gzip.Gzip(gzip.DefaultCompression))
+	//route.Use(gzip.Gzip(gzip.DefaultCompression))
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	if config.GetEnv().DEBUG {
 		route.Use(gin.Logger()) // Used in development mode, console print request records
