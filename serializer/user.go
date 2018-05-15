@@ -16,7 +16,7 @@ type UserResponse struct {
 }
 
 func (self *UserSerializer) Response() UserResponse {
-	userModel := self.Context.MustGet("my_user_model").(models.User)
+	userModel := self.Context.MustGet("user").(models.User)
 	user := UserResponse{
 		Username: userModel.UserName,
 		Email:    userModel.Email,

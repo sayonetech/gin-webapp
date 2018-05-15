@@ -3,6 +3,7 @@ package common
 // Common tools and helper functions
 import (
 	"fmt"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -50,4 +51,12 @@ func NewError(key string, err error) CommonError {
 	res.Errors = make(map[string]interface{})
 	res.Errors[key] = err.Error()
 	return res
+}
+
+//GetEnv ... to get the value from enviornment
+func Getenv(key string) bool {
+	if _, ok := os.LookupEnv(key); ok {
+		return true
+	}
+	return false
 }

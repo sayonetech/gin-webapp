@@ -23,7 +23,7 @@ func Register(context *gin.Context) {
 		context.JSON(http.StatusUnprocessableEntity, common.NewError("database", err))
 		return
 	}
-	context.Set("my_user_model", userModelValidator.UserModel)
+	context.Set("user", userModelValidator.UserModel)
 	serializer := serializer.UserSerializer{Context: context}
 	context.JSON(http.StatusCreated, gin.H{"user": serializer.Response()})
 }

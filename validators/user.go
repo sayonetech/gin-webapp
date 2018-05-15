@@ -13,14 +13,12 @@ import (
 // - DataModel: fill with data from Validator after invoking common.Bind(c, self)
 // Then, you can just call model.save() after the data is ready in DataModel.
 type UserModelValidator struct {
-	User struct {
-		Username  string `form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
-		Email     string `form:"email" json:"email" binding:"exists,email"`
-		Password  string `form:"password" json:"password" binding:"exists,min=8,max=255"`
-		FirstName string `form:"first_name" json:"first_name"`
-		LastName  string `form:"last_name" json:"last_name"`
-		Phone     string `form:"phone" json:"phone"`
-	} `json:"user"`
+	Username  string      `form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
+	Email     string      `form:"email" json:"email" binding:"exists,email"`
+	Password  string      `form:"password" json:"password" binding:"exists,min=8,max=255"`
+	FirstName string      `form:"first_name" json:"first_name"`
+	LastName  string      `form:"last_name" json:"last_name"`
+	Phone     string      `form:"phone" json:"phone"`
 	UserModel models.User `json:"-"`
 }
 
@@ -37,14 +35,14 @@ func (self *UserModelValidator) Bind(c *gin.Context) error {
 
 		return err
 	}
-	self.UserModel.UserName = self.User.Username
-	self.UserModel.Email = self.User.Email
-	self.UserModel.FirstName = self.User.FirstName
-	self.UserModel.LastName = self.User.LastName
-	self.UserModel.Phone = self.User.Phone
+	self.UserModel.UserName = self.Username
+	self.UserModel.Email = self.Email
+	self.UserModel.FirstName = self.FirstName
+	self.UserModel.LastName = self.LastName
+	self.UserModel.Phone = self.Phone
 
-	if self.User.Password != common.NBRandomPassword {
-		self.UserModel.SetPassword(self.User.Password)
+	if self.Password != common.NBRandomPassword {
+		self.UserModel.SetPassword(self.Password)
 	}
 
 	return nil
@@ -58,11 +56,11 @@ func NewUserModelValidator() UserModelValidator {
 
 func NewUserModelValidatorFillWith(userModel models.User) UserModelValidator {
 	userModelValidator := NewUserModelValidator()
-	userModelValidator.User.Username = userModel.UserName
-	userModelValidator.User.Email = userModel.Email
-	userModelValidator.User.FirstName = userModel.FirstName
-	userModelValidator.User.LastName = userModel.LastName
-	userModelValidator.User.Phone = userModel.Phone
+	userModelValidator.Username = userModel.UserName
+	userModelValidator.Email = userModel.Email
+	userModelValidator.FirstName = userModel.FirstName
+	userModelValidator.LastName = userModel.LastName
+	userModelValidator.Phone = userModel.Phone
 
 	return userModelValidator
 }

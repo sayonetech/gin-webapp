@@ -25,6 +25,11 @@ run:
 	$(GOBUILD) -o ./build/$(BINARY_NAME) -v ./
 	./build/$(BINARY_NAME)
 
+runlocal:
+	echo $(SHELL)
+	. ./env/local.env
+	$(MAKE) run
+
 restart:
 	kill -INT $$(cat pid)
 	$(GOBUILD) -o ./build/$(BINARY_NAME) -v ./
