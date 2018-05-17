@@ -12,4 +12,12 @@ func SessionMiddleWare() gin.HandlerFunc {
 			"cookies": cookies,
 		}).Info("Reading cookies")
 	}
+
+	//https://stackoverflow.com/questions/47085046/gin-sessions-stores-the-status-and-the-code-in-the-url-i-want-to-change-that-t
+	//https://stackoverflow.com/questions/36122999/how-to-create-a-authentication-model-to-restful-api-using-golang-gin
+	//https://github.com/Depado/gin-auth-example/blob/master/main.go
+	//https://sosedoff.com/2014/12/21/gin-middleware.html
+	//https://semaphoreci.com/community/tutorials/building-go-web-applications-and-microservices-using-gin
+	//https://github.com/rageix/ginAuth/blob/master/auth.go
+	//https://semaphoreci.com/community/tutorials/building-go-web-applications-and-microservices-using-gin
 }

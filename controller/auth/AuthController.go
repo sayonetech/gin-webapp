@@ -49,7 +49,11 @@ func UserLogin(context *gin.Context) {
 	}
 
 	//Manage session here
-	session.Authenticate(context, userModel)
+	if _, sessionError := session.Authenticate(context, userModel); sessionError != nil {
+		context.JSON(http.StatusBadRequest, err)
+		return
+	}
+
 	//https://github.com/acoshift/session
 	//https://github.com/go-macaron/session
 	//https://github.com/knq/sessionmw

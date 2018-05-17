@@ -36,7 +36,7 @@ type SessionStore interface {
 type Session struct {
 	SessionKey  string
 	SessionData string
-	ExpireDate  time.Time
+	ExpireDate  time.Time //604800 7 days
 }
 
 func (session *Session) Decode() {
@@ -56,23 +56,26 @@ func sessionId() string {
 }
 
 //Authenticate ... Authenticate the user with session
-func Authenticate(context *gin.Context, user models.User) {
+func Authenticate(context *gin.Context, user models.User) (bool, error) {
 	//Encode user data
-	if encrypted, err := encrypt(config.GetSessionConfig().Secret, fmt.Sprint(user.ID)); err != nil {
+	encrypted, err := encrypt(config.GetSessionConfig().Secret, fmt.Sprint(user.ID))
+	if err != nil {
 
 		log.WithFields(log.Fields{
 			"user": fmt.Sprint(user.ID),
 		}).Info("unable to encode", err)
+		return false, &sessionError{"error with encrypting the session key. Check the session configuration"}
 
-	} else {
-		sessionToken := sessionId()
-		session := &Session{SessionKey: sessionToken, SessionData: encrypted}
-		setSessionCookie(context, session)
 	}
+	sessionToken := sessionId()
+	session := &Session{SessionKey: sessionToken, SessionData: encrypted}
+	//Set Cookie
+	setSessionCookie(context, session)
 
 	//Set ExpireDate
 	//Create new session and save
-	//Set Cookie
+
+	return true, nil
 }
 
 //SetSessionCookie ... Set Cookie after the authentication
