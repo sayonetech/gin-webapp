@@ -30,6 +30,8 @@ type SessionStore interface {
 	Flush() error
 	// ID returns current session ID.
 	Encode() string
+	// Check the session object expiry
+	IsExpired() bool
 }
 
 //Session ... The Base session class
