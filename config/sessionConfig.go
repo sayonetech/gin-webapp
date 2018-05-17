@@ -3,8 +3,7 @@ package config
 // Config contains the configuration parameters for the session middleware.
 type Config struct {
 	// Secret is
-	Secret      []byte
-	BlockSecret []byte
+	Secret string
 
 	// Name is the cookie name.
 	Name string

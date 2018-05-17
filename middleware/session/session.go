@@ -61,6 +61,7 @@ func sessionId() string {
 //Authenticate ... Authenticate the user with session
 func Authenticate(context *gin.Context, user models.User) {
 	//Encode user data
+	//sessionData := SessionData{}
 	//Set ExpireDate
 	//Create new session and save
 	//Set Cookie

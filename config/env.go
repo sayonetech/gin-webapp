@@ -48,9 +48,7 @@ var enviornment = Env{
 }
 
 var sessionConfig = Config{
-	Secret:      []byte("LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7"),
-	BlockSecret: []byte("NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp"),
-
+	Secret:   GetEnv().APP_SECRET,
 	Name:     GetEnv().SESSION_KEY,
 	Path:     "",
 	Domain:   GetEnv().HOST,
@@ -64,6 +62,7 @@ func GetEnv() *Env {
 	return &enviornment
 }
 
+//GetSessionConfig get the current session configuration
 func GetSessionConfig() *Config {
 	return &sessionConfig
 }

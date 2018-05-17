@@ -14,7 +14,7 @@ build:
 	$(GOBUILD) -o ./build/$(BINARY_NAME) -v ./
 
 test:
-	$(GOTEST) -v ./
+	govendor test +local
 
 clean:
 	$(GOCLEAN)
@@ -46,6 +46,7 @@ cross:
 migrate:
 	$(GOBUILD) -o ./build/$(BINARY_NAME_MIGRATE) -v ./migration/migration.go
 	./build/$(BINARY_NAME_MIGRATE)
+
 
 loadfixtures:
 	#TODO
