@@ -3,20 +3,17 @@ package session
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	"go-webapp/config"
 	"go-webapp/models"
 	"io"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 const maxAge int = 365 * 24 * 60 * 60
-
-type SessionData struct {
-	UserID    int
-	UserEmail string
-}
 
 type SessionStore interface {
 	// Set sets value to given key in session.
@@ -38,7 +35,7 @@ type SessionStore interface {
 //Session ... The Base session class
 type Session struct {
 	SessionKey  string
-	SessionData SessionData
+	SessionData string
 	ExpireDate  time.Time
 }
 
@@ -61,7 +58,18 @@ func sessionId() string {
 //Authenticate ... Authenticate the user with session
 func Authenticate(context *gin.Context, user models.User) {
 	//Encode user data
-	//sessionData := SessionData{}
+	if encrypted, err := encrypt(config.GetSessionConfig().Secret, fmt.Sprint(user.ID)); err != nil {
+
+		log.WithFields(log.Fields{
+			"user": fmt.Sprint(user.ID),
+		}).Info("unable to encode", err)
+
+	} else {
+		sessionToken := sessionId()
+		session := &Session{SessionKey: sessionToken, SessionData: encrypted}
+		setSessionCookie(context, session)
+	}
+
 	//Set ExpireDate
 	//Create new session and save
 	//Set Cookie
@@ -69,14 +77,13 @@ func Authenticate(context *gin.Context, user models.User) {
 
 //SetSessionCookie ... Set Cookie after the authentication
 //https://stackoverflow.com/questions/40887538/go-gin-unable-to-set-cookies
-func SetSessionCookie(context *gin.Context) {
+func setSessionCookie(context *gin.Context, session *Session) {
 	//TODO Create Session Object
 	//TODO Set the cookie
 	//TODO Save Session to redis
-	sessionToken := sessionId()
 
 	context.SetCookie(config.GetSessionConfig().Name,
-		sessionToken,
+		session.SessionKey,
 		config.GetSessionConfig().MaxAge,
 		config.GetSessionConfig().Path,
 		config.GetSessionConfig().Domain,

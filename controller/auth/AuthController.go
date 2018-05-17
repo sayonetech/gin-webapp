@@ -49,7 +49,7 @@ func UserLogin(context *gin.Context) {
 	}
 
 	//Manage session here
-	session.SetSessionCookie(context)
+	session.Authenticate(context, userModel)
 	//https://github.com/acoshift/session
 	//https://github.com/go-macaron/session
 	//https://github.com/knq/sessionmw

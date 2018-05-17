@@ -48,7 +48,7 @@ var enviornment = Env{
 }
 
 var sessionConfig = Config{
-	Secret:   GetEnv().APP_SECRET,
+	Secret:   []byte(GetEnv().APP_SECRET),
 	Name:     GetEnv().SESSION_KEY,
 	Path:     "",
 	Domain:   GetEnv().HOST,
