@@ -8,6 +8,8 @@ import (
 // Environment configuration file
 // Multiple environment configurations can be configured for switching
 
+const MaxAge int = 365 * 24 * 60 * 60
+
 //Env Enviornment config
 type Env struct {
 	DEBUG             bool
@@ -22,6 +24,7 @@ type Env struct {
 	ACCESS_LOG_PATH   string
 	ERROR_LOG         bool
 	ERROR_LOG_PATH    string
+	SESSION_KEY       string
 }
 
 var enviornment = Env{
@@ -40,10 +43,27 @@ var enviornment = Env{
 	ERROR_LOG:      common.Getenv("ERROR_LOG"),
 	ERROR_LOG_PATH: os.Getenv("ERROR_LOG_PATH"),
 
-	APP_SECRET: os.Getenv("APP_SECRET"),
+	APP_SECRET:  os.Getenv("APP_SECRET"),
+	SESSION_KEY: os.Getenv("SESSION_KEY"),
+}
+
+var sessionConfig = Config{
+	Secret:      []byte("LymWKG0UvJFCiXLHdeYJTR1xaAcRvrf7"),
+	BlockSecret: []byte("NxyECgzxiYdMhMbsBrUcAAbyBuqKDrpp"),
+
+	Name:     GetEnv().SESSION_KEY,
+	Path:     "",
+	Domain:   GetEnv().HOST,
+	MaxAge:   MaxAge,
+	Secure:   false,
+	HttpOnly: false,
 }
 
 //GetEnv get the current enviornment configuration
 func GetEnv() *Env {
 	return &enviornment
+}
+
+func GetSessionConfig() *Config {
+	return &sessionConfig
 }

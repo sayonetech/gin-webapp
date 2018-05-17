@@ -3,6 +3,7 @@ package auth
 import (
 	"errors"
 	"go-webapp/common"
+	"go-webapp/middleware/session"
 	"go-webapp/models"
 	"go-webapp/serializer"
 	"go-webapp/validators"
@@ -46,7 +47,19 @@ func UserLogin(context *gin.Context) {
 		context.JSON(http.StatusForbidden, common.NewError("login", errors.New("Not Registered email or invalid password")))
 		return
 	}
+
 	//Manage session here
+	session.SetSessionCookie(context)
+	//https://github.com/acoshift/session
+	//https://github.com/go-macaron/session
+	//https://github.com/knq/sessionmw
+	//https://github.com/gin-contrib/sessions
+	//https://stackoverflow.com/questions/47085046/gin-sessions-stores-the-status-and-the-code-in-the-url-i-want-to-change-that-t
+	//https://www.sohamkamani.com/blog/2018/03/25/golang-session-authentication/
+	//https://github.com/apexskier/httpauth
+	//https://github.com/rageix/ginAuth
+	//https://jonathanmh.com/go-gin-http-basic-auth/
+
 	context.JSON(http.StatusOK, gin.H{})
 }
 
