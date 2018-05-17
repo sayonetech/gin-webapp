@@ -39,6 +39,8 @@ type Session struct {
 	SessionKey  string
 	SessionData string
 	ExpireDate  time.Time //604800 7 days
+	//https://github.com/apexskier/httpauth/blob/master/auth.go
+	Store SessionStore
 }
 
 func (session *Session) Decode() {
