@@ -11,8 +11,8 @@ import (
 // The AuthBackend interface defines a set of methods an AuthBackend must implement.
 type AuthBackend interface {
 	SaveUser(u models.User) error
-	User(id int) (user models.User, e error)
-	DeleteUser(id int) error
+	FetchUser(condition interface{}) (user models.User, e error)
+	DeleteUser(condition interface{}) error
 }
 
 //Backend Driver
@@ -29,17 +29,20 @@ func NewBackend() (b Backend) {
 }
 
 // User returns the user with the given usedID. Error is set to
-// ErrMissingUser if user is not found.
-func (b Backend) User(id int) (user models.User, e error) {
-	return user, nil
+// Error if user is not found.
+func (b Backend) FetchUser(condition interface{}) (user models.User, e error) {
+	var model models.User
+	err := b.db.Where(condition).First(&model).Error
+	return model, err
 }
 
 // SaveUser adds a new user
-func (b Backend) SaveUser(u models.User) error {
-	return nil
+func (b Backend) SaveUser(user models.User) error {
+	err := b.db.Save(user).Error
+	return err
 }
 
 // DeleteUser removes a user, raising ErrDeleteNull if that user was missing.
-func (b Backend) DeleteUser(id int) error {
+func (b Backend) DeleteUser(condition interface{}) error {
 	return nil
 }
