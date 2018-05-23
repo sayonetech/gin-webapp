@@ -15,7 +15,7 @@ import (
 
 const maxAge int = 365 * 24 * 60 * 60
 
-type SessionStore interface {
+type RawStore interface {
 	// Set sets value to given key in session.
 	Set(interface{}, interface{}) error
 	// Get gets value by given key in session.
@@ -34,20 +34,22 @@ type SessionStore interface {
 	IsExpired() bool
 }
 
+type Store struct {
+	session Session
+}
+
 //Session ... The Base session class
 type Session struct {
 	SessionKey  string
 	SessionData string
 	ExpireDate  time.Time //604800 7 days
-	//https://github.com/apexskier/httpauth/blob/master/auth.go
-	Store SessionStore
 }
 
-func (session *Session) Decode() {
+func (store *Store) Decode() {
 	//TODO return SessionData Struct
 }
 
-func (session *Session) Encode() {
+func (store *Store) Encode() {
 
 }
 

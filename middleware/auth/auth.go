@@ -1,8 +1,9 @@
-package session
+package auth
 
 import (
 	"errors"
 	"go-webapp/common"
+	"go-webapp/middleware/session"
 	"go-webapp/models"
 	"net/http"
 
@@ -10,14 +11,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var (
-	backend AuthBackend
-)
-
 // Authorizer structures contain the store of user session cookies a reference
 // to a backend storage system.
 type Authorizer struct {
-	session string      //redis session TODO
 	backend AuthBackend //auth backend TODO
 }
 
@@ -27,7 +23,6 @@ type Authorizer struct {
 func NewAuthorizer(b AuthBackend) *Authorizer {
 	a := new(Authorizer)
 
-	a.session = ""
 	a.backend = b
 	log.WithFields(log.Fields{
 		"backend": a.backend,
@@ -51,7 +46,7 @@ func (a Authorizer) Login(context *gin.Context, email string, password string) {
 	}
 
 	//Manage session here
-	if _, sessionError := Authenticate(context, userModel); sessionError != nil {
+	if _, sessionError := session.Authenticate(context, userModel); sessionError != nil {
 		context.JSON(http.StatusBadRequest, err)
 		return
 	}

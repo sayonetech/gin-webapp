@@ -2,7 +2,7 @@ package auth
 
 import (
 	"go-webapp/common"
-	"go-webapp/middleware/session"
+	"go-webapp/middleware/auth"
 	"go-webapp/serializer"
 	"go-webapp/validators"
 	"net/http"
@@ -11,13 +11,13 @@ import (
 )
 
 var (
-	backend    session.Backend
-	Authorizer *session.Authorizer
+	backend    auth.Backend
+	Authorizer *auth.Authorizer
 )
 
 func init() {
-	backend = session.NewBackend()
-	Authorizer = session.NewAuthorizer(backend)
+	backend = auth.NewBackend()
+	Authorizer = auth.NewAuthorizer(backend)
 }
 
 func Register(context *gin.Context) {
