@@ -52,6 +52,6 @@ func Secure(c *gin.Context) {
 // version information to the HTTP response. This is intended
 // for debugging and troubleshooting.
 func Version(c *gin.Context) {
-	c.Header("X-DRONE-VERSION", config.GetEnv().VERSION)
+	c.Header("X-APP-VERSION", config.GetEnv().VERSION)
 	c.Next()
 }
