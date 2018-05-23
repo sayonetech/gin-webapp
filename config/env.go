@@ -25,6 +25,7 @@ type Env struct {
 	ERROR_LOG         bool
 	ERROR_LOG_PATH    string
 	SESSION_KEY       string
+	VERSION           string
 }
 
 var enviornment = Env{
@@ -45,6 +46,7 @@ var enviornment = Env{
 
 	APP_SECRET:  os.Getenv("APP_SECRET"),
 	SESSION_KEY: os.Getenv("SESSION_KEY"),
+	VERSION:     os.Getenv("VERSION"),
 }
 
 var sessionConfig = Config{

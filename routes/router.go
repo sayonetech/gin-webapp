@@ -4,7 +4,6 @@ import (
 	"go-webapp/config"
 	"go-webapp/handle"
 
-	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	// proxy "github.com/chenhg5/gin-reverseproxy"
 	"github.com/swaggo/gin-swagger"
@@ -18,7 +17,6 @@ func InitRouter() *gin.Engine {
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	if config.GetEnv().DEBUG {
 		route.Use(gin.Logger()) // Used in development mode, console print request records
-		pprof.Register(route)   // Performance Analysis Tool
 	}
 
 	route.Use(handle.Errors()) // Error handling
