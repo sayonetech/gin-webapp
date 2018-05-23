@@ -1,16 +1,24 @@
 package auth
 
 import (
-	"errors"
 	"go-webapp/common"
 	"go-webapp/middleware/session"
-	"go-webapp/models"
 	"go-webapp/serializer"
 	"go-webapp/validators"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+var (
+	backend    session.Backend
+	Authorizer *session.Authorizer
+)
+
+func init() {
+	backend = session.NewBackend()
+	Authorizer = session.NewAuthorizer(backend)
+}
 
 func Register(context *gin.Context) {
 	//https://medium.com/@etiennerouzeaud/how-to-create-a-basic-restful-api-in-go-c8e032ba3181
@@ -21,7 +29,7 @@ func Register(context *gin.Context) {
 		return
 	}
 
-	if err := models.SaveOne(&userModelValidator.UserModel); err != nil {
+	if err := Authorizer.Register(&userModelValidator.UserModel); err != nil {
 		context.JSON(http.StatusUnprocessableEntity, common.NewError("database", err))
 		return
 	}
@@ -36,24 +44,7 @@ func UserLogin(context *gin.Context) {
 		context.JSON(http.StatusUnprocessableEntity, common.NewValidatorError(err))
 		return
 	}
-	userModel, err := models.FindUser(&models.User{Email: loginValidator.Email})
-
-	if err != nil {
-		context.JSON(http.StatusForbidden, common.NewError("login", errors.New("Not Registered email or invalid password")))
-		return
-	}
-
-	if userModel.CheckPassword(loginValidator.Password) != nil {
-		context.JSON(http.StatusForbidden, common.NewError("login", errors.New("Not Registered email or invalid password")))
-		return
-	}
-
-	//Manage session here
-	if _, sessionError := session.Authenticate(context, userModel); sessionError != nil {
-		context.JSON(http.StatusBadRequest, err)
-		return
-	}
-
+	Authorizer.Login(context, loginValidator.Email, loginValidator.Password)
 	//https://github.com/acoshift/session
 	//https://github.com/go-macaron/session
 	//https://github.com/knq/sessionmw
@@ -64,7 +55,6 @@ func UserLogin(context *gin.Context) {
 	//https://github.com/rageix/ginAuth
 	//https://jonathanmh.com/go-gin-http-basic-auth/
 
-	context.JSON(http.StatusOK, gin.H{})
 }
 
 func LogOut(c *gin.Context) {

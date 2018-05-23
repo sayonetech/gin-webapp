@@ -4,13 +4,14 @@ import (
 	"go-webapp/models"
 
 	"github.com/jinzhu/gorm"
+	log "github.com/sirupsen/logrus"
 )
 
 //https://github.com/apexskier/httpauth/blob/master/auth.go
 
 // The AuthBackend interface defines a set of methods an AuthBackend must implement.
 type AuthBackend interface {
-	SaveUser(u models.User) error
+	SaveUser(data interface{}) error
 	FetchUser(condition interface{}) (user models.User, e error)
 	DeleteUser(condition interface{}) error
 }
@@ -37,8 +38,11 @@ func (b Backend) FetchUser(condition interface{}) (user models.User, e error) {
 }
 
 // SaveUser adds a new user
-func (b Backend) SaveUser(user models.User) error {
-	err := b.db.Save(user).Error
+func (b Backend) SaveUser(data interface{}) error {
+	err := b.db.Save(data).Error
+	log.WithFields(log.Fields{
+		"error": err,
+	}).Info("Backend")
 	return err
 }
 
