@@ -1,8 +1,6 @@
 package session
 
 import (
-	"go-webapp/models"
-
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
@@ -24,27 +22,19 @@ func SessionMiddleWare() gin.HandlerFunc {
 	//https://semaphoreci.com/community/tutorials/building-go-web-applications-and-microservices-using-gin
 }
 
-func User(c *gin.Context) *models.User {
-	v, ok := c.Get("user")
-	if !ok {
-		return nil
-	}
-	u, ok := v.(*models.User)
-	if !ok {
-		return nil
-	}
-	return u
+func User(c *gin.Context) Store {
+	return FromContext(c)
 }
 
 func MustUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		user := User(c)
-		switch {
+		//user := User(c)
+		/*switch {
 		case user == nil:
 			c.String(401, "User not authorized")
 			c.Abort()
 		default:
 			c.Next()
-		}
+		}*/
 	}
 }
