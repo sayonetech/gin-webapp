@@ -9,6 +9,7 @@ import (
 	"io"
 	"time"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
@@ -17,11 +18,11 @@ const maxAge int = 365 * 24 * 60 * 60
 
 type RawStore interface {
 	// Set sets value to given key in session.
-	Set(interface{}, interface{}) error
+	Set(context *gin.Context) error
 	// Get gets value by given key in session.
-	Get(interface{}) interface{}
+	Get(context *gin.Context, key string) string //Session to be renamed
 	// Delete deletes a key from session.
-	Delete(interface{}) error
+	Delete(context *gin.Context, key string) error
 	// ID returns current session ID.
 	ID() string
 	// Release releases session resource and save data to provider.
@@ -43,6 +44,18 @@ type Session struct {
 	SessionKey  string
 	SessionData string
 	ExpireDate  time.Time //604800 7 days
+}
+
+func (store *Store) Set(context *gin.Context) {
+	session := sessions.Default(context)
+	session.Set(store.session.SessionKey, store.session)
+	session.Save()
+}
+
+func (store *Store) Get(context *gin.Context, key string) string {
+	session := sessions.Default(context)
+	data := session.Get(key)
+	return data.(string)
 }
 
 func (store *Store) Decode() {

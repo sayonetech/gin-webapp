@@ -26,6 +26,8 @@ type Env struct {
 	ERROR_LOG_PATH    string
 	SESSION_KEY       string
 	VERSION           string
+	REDIS_HOST        string
+	SESSION_OBJ_KEY   string
 }
 
 var enviornment = Env{
@@ -44,9 +46,11 @@ var enviornment = Env{
 	ERROR_LOG:      common.Getenv("ERROR_LOG"),
 	ERROR_LOG_PATH: os.Getenv("ERROR_LOG_PATH"),
 
-	APP_SECRET:  os.Getenv("APP_SECRET"),
-	SESSION_KEY: os.Getenv("SESSION_KEY"),
-	VERSION:     os.Getenv("VERSION"),
+	APP_SECRET:      os.Getenv("APP_SECRET"),
+	SESSION_KEY:     os.Getenv("SESSION_KEY"),
+	VERSION:         os.Getenv("VERSION"),
+	REDIS_HOST:      os.Getenv("REDIS_HOST"),
+	SESSION_OBJ_KEY: os.Getenv("SESSION_OBJ_KEY"),
 }
 
 var sessionConfig = Config{
