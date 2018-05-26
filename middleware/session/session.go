@@ -26,9 +26,7 @@ type RawStore interface {
 	// ID returns current session ID.
 	ID() string
 	// Release releases session resource and save data to provider.
-	Decode(interface{}) error
-	// Flush deletes all session data.
-	Flush() error
+	Decode(context *gin.Context) error
 	// ID returns current session ID.
 	Encode() string
 	// Check the session object expiry
@@ -58,12 +56,19 @@ func (store *Store) Get(context *gin.Context, key string) string {
 	return data.(string)
 }
 
-func (store *Store) Decode() {
+func (store *Store) ID() string {
+	return store.session.SessionKey
+}
+
+func (store *Store) Decode(context *gin.Context) {
 	//TODO return SessionData Struct
 }
 
 func (store *Store) Encode() {
 
+}
+func (store *Store) IsExpired() bool {
+	return false
 }
 
 func sessionId() string {
