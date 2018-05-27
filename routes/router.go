@@ -18,6 +18,7 @@ import (
 //InitRouter Initialise router
 func InitRouter() *gin.Engine {
 	route := gin.New()
+	//TODO change Redis with https://github.com/go-redis/redis
 	store, _ := redis.NewStore(10, "tcp", config.GetEnv().REDIS_HOST, "", []byte("secret"))
 	route.Use(sessions.Sessions(config.GetEnv().SESSION_OBJ_KEY, store))
 	//route.Use(gzip.Gzip(gzip.DefaultCompression))
