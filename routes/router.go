@@ -3,6 +3,9 @@ package routes
 import (
 	"go-webapp/config"
 	"go-webapp/handle"
+	"go-webapp/middleware/cors"
+	"go-webapp/middleware/log"
+	"go-webapp/middleware/request"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
@@ -23,6 +26,11 @@ func InitRouter() *gin.Engine {
 		route.Use(gin.Logger()) // Used in development mode, console print request records
 	}
 
+	route.Use(log.JSONLogMiddleware())
+	route.Use(gin.Recovery())
+	route.Use(request.RequestID(request.RequestIDOptions{AllowSetting: false}))
+
+	route.Use(cors.CORS(cors.CORSOptions{}))
 	route.Use(handle.Errors()) // Error handling
 
 	registerAPIRouter(route)
