@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var store *session.SessionStore
+var store *session.Store
 
 func init() {
 	store = session.NewSessionStore()

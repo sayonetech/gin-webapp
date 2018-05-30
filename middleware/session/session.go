@@ -19,33 +19,16 @@ const maxAge int = 365 * 24 * 60 * 60
 
 var client *redis.Client
 
-type Store interface {
-	// Set sets value to given key in session.
-	Save(context *gin.Context) error
-	// Get gets value by given key in session.
-	Get(context *gin.Context, key string) string //Session to be renamed
-	// Delete deletes a key from session.
-	Delete(context *gin.Context, key string) error
-	// ID returns current session ID.
-	ID() string
-	// Release releases session resource and save data to provider.
-	Decode(context *gin.Context) error
-	// ID returns current session ID.
-	Encode() string
-	// Check the session object expiry
-	IsExpired() bool
-}
-
-type SessionStore struct {
+type Store struct {
 	session Session
 	cache   *redis.Client
 }
 
-func NewSessionStore() *SessionStore {
-	sessionStore := &SessionStore{
+func NewSessionStore() *Store {
+	store := &Store{
 		cache: client,
 	}
-	return sessionStore
+	return store
 }
 
 //Session ... The Base session class
@@ -54,7 +37,7 @@ type Session struct {
 	SessionData string
 }
 
-func (store *SessionStore) Save(context *gin.Context) {
+func (store *Store) Save(context *gin.Context) {
 	err := store.cache.Set(store.session.SessionKey, store.session.SessionData, time.Hour).Err()
 	if err != nil {
 		panic(err)
@@ -64,22 +47,22 @@ func (store *SessionStore) Save(context *gin.Context) {
 	}).Info("Save SessionStore")
 }
 
-func (store *SessionStore) Get(context *gin.Context, key string) string {
+func (store *Store) Get(context *gin.Context, key string) string {
 	return store.session.SessionKey
 }
 
-func (store *SessionStore) ID() string {
+func (store *Store) ID() string {
 	return store.session.SessionKey
 }
 
-func (store *SessionStore) Decode(context *gin.Context) {
+func (store *Store) Decode(context *gin.Context) {
 	//TODO return SessionData Struct
 }
 
-func (store *SessionStore) Encode() {
+func (store *Store) Encode() {
 
 }
-func (store *SessionStore) IsExpired() bool {
+func (store *Store) IsExpired() bool {
 	return false
 }
 
@@ -142,8 +125,8 @@ func setSessionCookie(context *gin.Context, session Session) {
 }
 
 // shortcut to get session
-func Default(c *gin.Context) *SessionStore {
-	return c.MustGet("store").(*SessionStore)
+func Default(c *gin.Context) *Store {
+	return c.MustGet("store").(*Store)
 }
 
 func init() {

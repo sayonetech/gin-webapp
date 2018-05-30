@@ -23,7 +23,7 @@ func SessionMiddleWare() gin.HandlerFunc {
 	//https://semaphoreci.com/community/tutorials/building-go-web-applications-and-microservices-using-gin
 }
 
-func Sessions(store *SessionStore) gin.HandlerFunc {
+func Sessions(store *Store) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set("store", store)
 		defer context.Clear(c.Request)
