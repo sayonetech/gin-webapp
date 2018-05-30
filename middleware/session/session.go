@@ -7,7 +7,6 @@ import (
 	"go-webapp/config"
 	"go-webapp/models"
 	"io"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
@@ -52,7 +51,6 @@ func NewSessionStore() *SessionStore {
 type Session struct {
 	SessionKey  string
 	SessionData string
-	ExpireDate  time.Time //604800 7 days
 }
 
 func (store *SessionStore) Save(context *gin.Context) {
