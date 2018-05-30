@@ -7,6 +7,7 @@ import (
 	"go-webapp/config"
 	"go-webapp/models"
 	"io"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
@@ -54,9 +55,13 @@ type Session struct {
 }
 
 func (store *SessionStore) Save(context *gin.Context) {
+	err := store.cache.Set(store.session.SessionKey, store.session.SessionData, time.Hour).Err()
+	if err != nil {
+		panic(err)
+	}
 	log.WithFields(log.Fields{
 		"test": "ddddd",
-	}).Info("test SessionStore")
+	}).Info("Save SessionStore")
 }
 
 func (store *SessionStore) Get(context *gin.Context, key string) string {
@@ -105,13 +110,7 @@ func Authenticate(context *gin.Context, user models.User) (bool, error) {
 
 	sessionToken := sessionId()
 	session := Session{SessionKey: sessionToken, SessionData: encrypted}
-	log.WithFields(log.Fields{
-		"context": context,
-	}).Info("Authorizer--Authenticate")
 	store := Default(context)
-	log.WithFields(log.Fields{
-		"store": store,
-	}).Info("Authorizer--Authenticate")
 	store.session = session
 	store.Save(context)
 	//github.com/vmihailenco/msgpack
