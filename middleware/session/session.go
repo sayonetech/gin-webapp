@@ -9,16 +9,19 @@ import (
 	"io"
 	"time"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 	log "github.com/sirupsen/logrus"
+	"github.com/vmihailenco/msgpack"
 )
 
 const maxAge int = 365 * 24 * 60 * 60
 
-type RawStore interface {
+var client *redis.Client
+
+type Store interface {
 	// Set sets value to given key in session.
-	Set(context *gin.Context) error
+	Save(context *gin.Context) error
 	// Get gets value by given key in session.
 	Get(context *gin.Context, key string) string //Session to be renamed
 	// Delete deletes a key from session.
@@ -33,8 +36,16 @@ type RawStore interface {
 	IsExpired() bool
 }
 
-type Store struct {
+type SessionStore struct {
 	session Session
+	cache   *redis.Client
+}
+
+func NewSessionStore() *SessionStore {
+	sessionStore := &SessionStore{
+		cache: client,
+	}
+	return sessionStore
 }
 
 //Session ... The Base session class
@@ -44,30 +55,26 @@ type Session struct {
 	ExpireDate  time.Time //604800 7 days
 }
 
-func (store *Store) Set(context *gin.Context) {
-	session := sessions.Default(context)
-	session.Set(store.session.SessionKey, store.session)
-	session.Save()
+func (store *SessionStore) Save(context *gin.Context) {
+
 }
 
-func (store *Store) Get(context *gin.Context, key string) string {
-	session := sessions.Default(context)
-	data := session.Get(key)
-	return data.(string)
-}
-
-func (store *Store) ID() string {
+func (store *SessionStore) Get(context *gin.Context, key string) string {
 	return store.session.SessionKey
 }
 
-func (store *Store) Decode(context *gin.Context) {
+func (store *SessionStore) ID() string {
+	return store.session.SessionKey
+}
+
+func (store *SessionStore) Decode(context *gin.Context) {
 	//TODO return SessionData Struct
 }
 
-func (store *Store) Encode() {
+func (store *SessionStore) Encode() {
 
 }
-func (store *Store) IsExpired() bool {
+func (store *SessionStore) IsExpired() bool {
 	return false
 }
 
@@ -82,7 +89,11 @@ func sessionId() string {
 //Authenticate ... Authenticate the user with session
 func Authenticate(context *gin.Context, user models.User) (bool, error) {
 	//Encode user data
-	encrypted, err := encrypt(config.GetSessionConfig().Secret, fmt.Sprint(user.ID))
+	userData, err := msgpack.Marshal(user)
+	if err != nil {
+		panic(err)
+	}
+	encrypted, err := encrypt(config.GetSessionConfig().Secret, userData)
 	if err != nil {
 
 		log.WithFields(log.Fields{
@@ -92,7 +103,11 @@ func Authenticate(context *gin.Context, user models.User) (bool, error) {
 
 	}
 	sessionToken := sessionId()
-	session := &Session{SessionKey: sessionToken, SessionData: encrypted}
+	session := Session{SessionKey: sessionToken, SessionData: encrypted}
+	store := Default(context)
+	store.session = session
+	store.Save(context)
+	//github.com/vmihailenco/msgpack
 	//Set Cookie
 	setSessionCookie(context, session)
 
@@ -104,7 +119,7 @@ func Authenticate(context *gin.Context, user models.User) (bool, error) {
 
 //SetSessionCookie ... Set Cookie after the authentication
 //https://stackoverflow.com/questions/40887538/go-gin-unable-to-set-cookies
-func setSessionCookie(context *gin.Context, session *Session) {
+func setSessionCookie(context *gin.Context, session Session) {
 	//TODO Create Session Object
 	//TODO Set the cookie
 	//TODO Save Session to redis
@@ -118,4 +133,18 @@ func setSessionCookie(context *gin.Context, session *Session) {
 		config.GetSessionConfig().HttpOnly,
 	)
 
+}
+
+// shortcut to get session
+func Default(c *gin.Context) SessionStore {
+	return c.MustGet("store").(SessionStore)
+}
+
+func init() {
+	connection := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	client = connection
 }

@@ -9,8 +9,7 @@ import (
 	"io"
 )
 
-func encrypt(key []byte, message string) (encmess string, err error) {
-	plainText := []byte(message)
+func encrypt(key []byte, message []byte) (encmess string, err error) {
 
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -19,14 +18,14 @@ func encrypt(key []byte, message string) (encmess string, err error) {
 
 	//IV needs to be unique, but doesn't have to be secure.
 	//It's common to put it at the beginning of the ciphertext.
-	cipherText := make([]byte, aes.BlockSize+len(plainText))
+	cipherText := make([]byte, aes.BlockSize+len(message))
 	iv := cipherText[:aes.BlockSize]
 	if _, err = io.ReadFull(rand.Reader, iv); err != nil {
 		return
 	}
 
 	stream := cipher.NewCFBEncrypter(block, iv)
-	stream.XORKeyStream(cipherText[aes.BlockSize:], plainText)
+	stream.XORKeyStream(cipherText[aes.BlockSize:], message)
 
 	//returns to base64 encoded string
 	encmess = base64.URLEncoding.EncodeToString(cipherText)

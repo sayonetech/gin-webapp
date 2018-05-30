@@ -2,6 +2,7 @@ package session
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/context"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,6 +21,14 @@ func SessionMiddleWare() gin.HandlerFunc {
 	//https://semaphoreci.com/community/tutorials/building-go-web-applications-and-microservices-using-gin
 	//https://github.com/rageix/ginAuth/blob/master/auth.go
 	//https://semaphoreci.com/community/tutorials/building-go-web-applications-and-microservices-using-gin
+}
+
+func Sessions(store *SessionStore) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("store", store)
+		defer context.Clear(c.Request)
+		c.Next()
+	}
 }
 
 func User(c *gin.Context) Store {

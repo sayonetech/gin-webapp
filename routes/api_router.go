@@ -11,6 +11,8 @@ import (
 )
 
 func registerAPIRouter(router *gin.Engine) {
+	store := session.NewSessionStore()
+	router.Use(session.Sessions(store))
 	router.Use(session.SessionMiddleWare())
 	api := router.Group("/api")
 	api.GET("/index", c.IndexApi)

@@ -11,7 +11,7 @@ func TestSum(t *testing.T) {
 	CIPHER_KEY := []byte("0123456789012345")
 	msg := strconv.Itoa(rand.Intn(100))
 
-	if encrypted, err := encrypt(CIPHER_KEY, msg); err != nil {
+	if encrypted, err := encrypt(CIPHER_KEY, []byte(msg)); err != nil {
 		log.Println(err)
 	} else {
 		log.Printf("CIPHER KEY: %s\n", string(CIPHER_KEY))
