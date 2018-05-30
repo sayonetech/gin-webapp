@@ -56,14 +56,7 @@ func (a Authorizer) Login(context *gin.Context, email string, password string) {
 
 //Register the user to the system
 func (a Authorizer) Register(data interface{}) error {
-	log.WithFields(log.Fields{
-		"data":    data,
-		"backend": a.backend,
-	}).Info("Authorizer--Register")
 	err := a.backend.SaveUser(data)
-	log.WithFields(log.Fields{
-		"error": err,
-	}).Info("Authorizer--Register")
 	return err
 }
 

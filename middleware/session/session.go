@@ -54,7 +54,9 @@ type Session struct {
 }
 
 func (store *SessionStore) Save(context *gin.Context) {
-
+	log.WithFields(log.Fields{
+		"test": "ddddd",
+	}).Info("test SessionStore")
 }
 
 func (store *SessionStore) Get(context *gin.Context, key string) string {
@@ -100,9 +102,16 @@ func Authenticate(context *gin.Context, user models.User) (bool, error) {
 		return false, &sessionError{"error with encrypting the session key. Check the session configuration"}
 
 	}
+
 	sessionToken := sessionId()
 	session := Session{SessionKey: sessionToken, SessionData: encrypted}
+	log.WithFields(log.Fields{
+		"context": context,
+	}).Info("Authorizer--Authenticate")
 	store := Default(context)
+	log.WithFields(log.Fields{
+		"store": store,
+	}).Info("Authorizer--Authenticate")
 	store.session = session
 	store.Save(context)
 	//github.com/vmihailenco/msgpack
@@ -134,8 +143,8 @@ func setSessionCookie(context *gin.Context, session Session) {
 }
 
 // shortcut to get session
-func Default(c *gin.Context) SessionStore {
-	return c.MustGet("store").(SessionStore)
+func Default(c *gin.Context) *SessionStore {
+	return c.MustGet("store").(*SessionStore)
 }
 
 func init() {

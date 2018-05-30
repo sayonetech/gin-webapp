@@ -10,8 +10,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var store *session.SessionStore
+
+func init() {
+	store = session.NewSessionStore()
+}
+
 func registerAPIRouter(router *gin.Engine) {
-	store := session.NewSessionStore()
 	router.Use(session.Sessions(store))
 	router.Use(session.SessionMiddleWare())
 	api := router.Group("/api")
