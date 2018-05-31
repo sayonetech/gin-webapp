@@ -55,8 +55,8 @@ Start fresh:
 - [x] Migration
 - [x] Swagger Doc
 - [x] GZip https://github.com/gin-contrib/gzip
-- [] Authentication
-- [] Session
+- [x] Authentication
+- [x] Session
 - [] ElasticSearch
 - [] Task Queue
 - [] SMTP
