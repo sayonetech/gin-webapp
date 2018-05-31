@@ -47,6 +47,22 @@ func (store *Store) Save(context *gin.Context) {
 	}).Info("Save SessionStore")
 }
 
+func (store *Store) Authenticate(context *gin.Context, user models.User) bool {
+	encrypted, err := store.Encode(context, user)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"authenticate": "Error occured",
+		}).Info("unable to encode", err)
+		return false
+	}
+	sessionToken := sessionId()
+	session := Session{SessionKey: sessionToken, SessionData: encrypted}
+	store.session = session
+	store.Save(context)
+	setSessionCookie(context, session)
+	return true
+}
+
 func (store *Store) Get(context *gin.Context, key string) string {
 	return store.session.SessionKey
 }
@@ -55,11 +71,24 @@ func (store *Store) ID() string {
 	return store.session.SessionKey
 }
 
-func (store *Store) Decode(context *gin.Context) {
-	//TODO return SessionData Struct
+func (store *Store) Encode(context *gin.Context, user models.User) (string, error) {
+	userData, err := msgpack.Marshal(user)
+	if err != nil {
+		panic(err)
+	}
+	encrypted, err := encrypt(config.GetSessionConfig().Secret, userData)
+	if err != nil {
+
+		log.WithFields(log.Fields{
+			"user": fmt.Sprint(user.ID),
+		}).Info("unable to encode", err)
+		return "", &sessionError{"error with encrypting the session key. Check the session configuration"}
+
+	}
+	return encrypted, nil
 }
 
-func (store *Store) Encode() {
+func (store *Store) Decode() {
 
 }
 func (store *Store) IsExpired() bool {
@@ -75,35 +104,9 @@ func sessionId() string {
 }
 
 //Authenticate ... Authenticate the user with session
-func Authenticate(context *gin.Context, user models.User) (bool, error) {
-	//Encode user data
-	userData, err := msgpack.Marshal(user)
-	if err != nil {
-		panic(err)
-	}
-	encrypted, err := encrypt(config.GetSessionConfig().Secret, userData)
-	if err != nil {
-
-		log.WithFields(log.Fields{
-			"user": fmt.Sprint(user.ID),
-		}).Info("unable to encode", err)
-		return false, &sessionError{"error with encrypting the session key. Check the session configuration"}
-
-	}
-
-	sessionToken := sessionId()
-	session := Session{SessionKey: sessionToken, SessionData: encrypted}
+func Authenticate(context *gin.Context, user models.User) bool {
 	store := Default(context)
-	store.session = session
-	store.Save(context)
-	//github.com/vmihailenco/msgpack
-	//Set Cookie
-	setSessionCookie(context, session)
-
-	//Set ExpireDate
-	//Create new session and save
-
-	return true, nil
+	return store.Authenticate(context, user)
 }
 
 //SetSessionCookie ... Set Cookie after the authentication

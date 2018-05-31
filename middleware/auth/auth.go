@@ -46,7 +46,7 @@ func (a Authorizer) Login(context *gin.Context, email string, password string) {
 	}
 
 	//Manage session here
-	if _, sessionError := session.Authenticate(context, userModel); sessionError != nil {
+	if sessionError := session.Authenticate(context, userModel); !sessionError {
 		context.JSON(http.StatusBadRequest, err)
 		return
 	}
