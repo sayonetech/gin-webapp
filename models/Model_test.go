@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+// BenchmarkCheckPassword... becnhmark for Check password
+// go test -v -bench=. -benchmem
 func BenchmarkCheckPassword(bench *testing.B) {
 
 	for i := 0; i < bench.N; i++ {
