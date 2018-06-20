@@ -6,3 +6,4 @@ storage
 pid
 build/*
 tmp
+go-webapp
