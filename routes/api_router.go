@@ -17,8 +17,7 @@ func init() {
 }
 
 func registerAPIRouter(router *gin.Engine) {
-	router.Use(session.Sessions(store))
-	router.Use(session.SessionMiddleWare())
+
 	api := router.Group("/api")
 	api.GET("/index", c.IndexApi)
 
@@ -44,4 +43,5 @@ func registerAPIRouter(router *gin.Engine) {
 	}
 
 	router.GET("/version", server.Version)
+
 }
