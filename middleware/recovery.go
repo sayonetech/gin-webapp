@@ -12,10 +12,10 @@ func Recovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		defer func() {
-			if err := recover(); err != nil {
+			if recover() != nil {
 				c.JSON(500, gin.H{
 					"code": 10500,
-					"msg":  err,
+					"msg":  "internal",
 				})
 
 				loge.WithFields(loge.Fields{
