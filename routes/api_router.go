@@ -43,5 +43,8 @@ func registerAPIRouter(router *gin.Engine) {
 	}
 
 	router.GET("/version", server.Version)
+	router.GET("/panic", func(c *gin.Context) {
+		panic(1)
+	})
 
 }
