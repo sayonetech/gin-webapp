@@ -41,30 +41,15 @@ func Recovery() gin.HandlerFunc {
 
 			if recover() != nil {
 
-				errorFile, _ := os.OpenFile(config.GetEnv().ERROR_LOG_PATH, os.O_CREATE|os.O_WRONLY, 0666)
 				c.JSON(500, gin.H{
 					"code": 10500,
 					"msg":  "internal",
 				})
-
 				if config.GetEnv().DEBUG {
-
+					log.SetOutput(os.Stdout)
 				} else {
-					log.SetOutput(io.MultiWriter(errorFile))
+					CaptureErrorWithSentry(fmt.Errorf("%s", string(debug.Stack())))
 				}
-
-				log.WithFields(log.Fields{
-					"client_ip":  common.GetClientIP(c),
-					"method":     c.Request.Method,
-					"path":       c.Request.RequestURI,
-					"status":     c.Writer.Status(),
-					"referrer":   c.Request.Referer(),
-					"request_id": c.Writer.Header().Get("Request-Id"),
-					"stack":      string(debug.Stack()),
-					// "api_version": util.ApiVersion,
-				}).Error(c.Errors.String())
-				_ = errorFile.Close()
-				fmt.Println("...")
 			}
 		}()
 		// resume by calling gin context next

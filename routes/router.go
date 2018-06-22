@@ -8,12 +8,14 @@ import (
 	"go-webapp/middleware/session"
 	//	"os"
 	// proxy "github.com/chenhg5/gin-reverseproxy"
+	"github.com/getsentry/raven-go"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 //InitRouter Initialise router
 func InitRouter() *gin.Engine {
+	raven.SetDSN(config.GetEnv().SENTRY_URL)
 	route := gin.New()
 	//route.Use(gzip.Gzip(gzip.DefaultCompression))
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
