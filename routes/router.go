@@ -22,6 +22,8 @@ func InitRouter() *gin.Engine {
 	//var logger = loge.New()
 	//	Log := log.Logger{Writer: logger, ErrorLog: os.Stdout}
 	//route.Use(Log.JSONLogMiddleware())
+	//TODO: open hte files to whcih to write log files
+	//TODO: initialte the logger struct here and call the recovery function as a method
 	route.Use(log.Recovery()) // *custom recovery
 	route.Use(request.RequestID(request.RequestIDOptions{AllowSetting: false}))
 	route.Use(cors.CORS(cors.CORSOptions{}))
