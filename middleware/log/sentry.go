@@ -5,6 +5,6 @@ import (
 )
 
 func CaptureErrorWithSentry(err error) error {
-	raven.CaptureErrorAndWait(err, nil)
+	raven.CaptureError(err, nil)
 	return nil
 }

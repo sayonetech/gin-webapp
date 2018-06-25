@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-webapp/config"
 	"go-webapp/middleware/cors"
 	"go-webapp/middleware/log"
 	"go-webapp/middleware/request"

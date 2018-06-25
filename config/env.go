@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/kurianCoding/envs"
 	"go-webapp/common"
 	"os"
 )
@@ -28,6 +29,11 @@ type Env struct {
 	VERSION           string
 	REDIS_HOST        string
 	SESSION_OBJ_KEY   string
+	SENTRY_URL        string
+}
+
+func getEnvs() map[string]string {
+	return envs.Read()
 }
 
 var enviornment = Env{
@@ -51,6 +57,7 @@ var enviornment = Env{
 	VERSION:         os.Getenv("VERSION"),
 	REDIS_HOST:      os.Getenv("REDIS_HOST"),
 	SESSION_OBJ_KEY: os.Getenv("SESSION_OBJ_KEY"),
+	SENTRY_URL:      os.Getenv("SENTRY_URL"),
 }
 
 var sessionConfig = Config{

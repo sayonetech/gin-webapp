@@ -7,7 +7,7 @@ import (
 	"go-webapp/common"
 	"go-webapp/config"
 	"io"
-	"os"
+	//"os"
 	"runtime/debug"
 	"time"
 )
@@ -46,7 +46,8 @@ func Recovery() gin.HandlerFunc {
 					"msg":  "internal",
 				})
 				if config.GetEnv().DEBUG {
-					log.SetOutput(os.Stdout)
+					//log.SetOutput(os.Stdout)
+					fmt.Println(fmt.Errorf("%s", string(debug.Stack())))
 				} else {
 					CaptureErrorWithSentry(fmt.Errorf("%s", string(debug.Stack())))
 				}
