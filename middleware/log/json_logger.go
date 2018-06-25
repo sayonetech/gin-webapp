@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// TODO: add the recover functiont to logger struct
 type Logger struct {
 	//	AccessLog io.Writer // pointer to Access Log
 	ErrorLog io.Writer // pointer to Access Log
