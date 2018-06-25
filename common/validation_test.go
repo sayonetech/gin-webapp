@@ -1,21 +1,22 @@
 package common
 
 import (
+	//"fmt"
 	"testing"
 )
 
 // testing the validation package
 func TestBind(ts *testing.T) {
-	user := &validators.UserModelValidator{Username: "",
+	user := &UserModelValidator{Username: "",
 		Email:     "test@gmail",
 		Password:  "testing",
 		FirstName: "",
 		LastName:  "",
 		Phone:     "",
-		UserModel: nil}
+	}
 	err := Bind(user)
-	fmt.Println(err)
+	//fmt.Println(err)
 	if err == nil {
-		t.Errorf("validation for User name failed")
+		ts.Errorf("validation for blank User name failed")
 	}
 }

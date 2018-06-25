@@ -8,21 +8,31 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"go-webapp/validators"
+	//"github.com/gin-gonic/gin/binding"
+	//"go-webapp/validators"
 	validator "gopkg.in/go-playground/validator.v8"
 )
+
+type UserModelValidator struct {
+	Username  string `validate:"required" form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
+	Email     string `form:"email" json:"email" binding:"exists,email"`
+	Password  string `form:"password" json:"password" binding:"exists,min=8,max=255"`
+	FirstName string `form:"first_name" json:"first_name"`
+	LastName  string `form:"last_name" json:"last_name"`
+	Phone     string `form:"phone" json:"phone"`
+	//UserModel models.User `json:"-"`
+}
 
 const NBRandomPassword = "A String Very Very Very Niubilty!!@##$!@#4"
 
 // Changed the c.MustBindWith() ->  c.ShouldBindWith().
 // I don't want to auto return 400 when error happened.
 // origin function is here: https://github.com/gin-gonic/gin/blob/master/context.go
-func Bind(obj *validators.UserModelValidator) error {
+func Bind(obj *UserModelValidator) error {
 	//b := binding.Default(c.Request.Method, c.ContentType())
 	//return c.ShouldBindWith(obj, b)
 	config := &validator.Config{TagName: "validate"}
-	validate := validator.New()
+	validate := validator.New(config)
 	return validate.Struct(obj)
 
 }
