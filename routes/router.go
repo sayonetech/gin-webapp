@@ -16,8 +16,10 @@ import (
 
 //InitRouter Initialise router
 func InitRouter() *gin.Engine {
+
 	raven.SetDSN(config.GetEnv().SENTRY_URL)
 	route := gin.New()
+	//reads all environment variables and sets them to a map
 	//route.Use(gzip.Gzip(gzip.DefaultCompression))
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	//var logger = loge.New()
