@@ -12,21 +12,27 @@ import (
 // - Validator: write the form/json checking rule according to the doc https://github.com/go-playground/validator
 // - DataModel: fill with data from Validator after invoking common.Bind(c, self)
 // Then, you can just call model.save() after the data is ready in DataModel.
-// type UserModelValidator struct {
-// 	Username  string      `validate:"required" form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
-// 	Email     string      `form:"email" json:"email" binding:"exists,email"`
-// 	Password  string      `form:"password" json:"password" binding:"exists,min=8,max=255"`
-// 	FirstName string      `form:"first_name" json:"first_name"`
-// 	LastName  string      `form:"last_name" json:"last_name"`
-// 	Phone     string      `form:"phone" json:"phone"`
-// 	UserModel models.User `json:"-"`
-// }
+type UserModelValidator struct {
+	Username  string      `validate:"required" form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
+	Email     string      `form:"email" json:"email" binding:"exists,email"`
+	Password  string      `form:"password" json:"password" binding:"exists,min=8,max=255"`
+	FirstName string      `form:"first_name" json:"first_name"`
+	LastName  string      `form:"last_name" json:"last_name"`
+	Phone     string      `form:"phone" json:"phone"`
+	UserModel models.User `json:"-"`
+}
 
 // There are some difference when you create or update a model, you need to fill the DataModel before
 // update so that you can use your origin data to cheat the validator.
 // BTW, you can put your general binding logic here such as setting password.
-func (self *common.UserModelValidator) Bind(c *gin.Context) error {
-	err := common.Bind(self)
+func (self *UserModelValidator) Bind(c *gin.Context) error {
+	err := common.Bind(&common.UserModelValidator{Username: self.Username,
+		Email:     self.Email,
+		Password:  self.Password,
+		FirstName: self.FirstName,
+		LastName:  self.LastName,
+		Phone:     self.Phone,
+	})
 
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -72,7 +78,10 @@ type LoginValidator struct {
 }
 
 func (self *LoginValidator) Bind(c *gin.Context) error {
-	err := common.Bind(c, self)
+	err := common.Bind(&common.UserModelValidator{
+		Email:    self.Email,
+		Password: self.Password,
+	})
 	if err != nil {
 		return err
 	}
