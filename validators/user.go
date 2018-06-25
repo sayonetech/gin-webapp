@@ -13,7 +13,7 @@ import (
 // - DataModel: fill with data from Validator after invoking common.Bind(c, self)
 // Then, you can just call model.save() after the data is ready in DataModel.
 type UserModelValidator struct {
-	Username  string      `form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
+	Username  string      `validate:"required" form:"username" json:"username" binding:"exists,alphanum,min=4,max=255"`
 	Email     string      `form:"email" json:"email" binding:"exists,email"`
 	Password  string      `form:"password" json:"password" binding:"exists,min=8,max=255"`
 	FirstName string      `form:"first_name" json:"first_name"`
@@ -26,7 +26,7 @@ type UserModelValidator struct {
 // update so that you can use your origin data to cheat the validator.
 // BTW, you can put your general binding logic here such as setting password.
 func (self *UserModelValidator) Bind(c *gin.Context) error {
-	err := common.Bind(c, self)
+	err := common.Bind(self)
 
 	if err != nil {
 		log.WithFields(log.Fields{

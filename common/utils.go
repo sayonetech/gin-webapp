@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"go-webapp/validators"
 	validator "gopkg.in/go-playground/validator.v8"
 )
 
@@ -17,9 +18,13 @@ const NBRandomPassword = "A String Very Very Very Niubilty!!@##$!@#4"
 // Changed the c.MustBindWith() ->  c.ShouldBindWith().
 // I don't want to auto return 400 when error happened.
 // origin function is here: https://github.com/gin-gonic/gin/blob/master/context.go
-func Bind(c *gin.Context, obj interface{}) error {
-	b := binding.Default(c.Request.Method, c.ContentType())
-	return c.ShouldBindWith(obj, b)
+func Bind(obj *validators.UserModelValidator) error {
+	//b := binding.Default(c.Request.Method, c.ContentType())
+	//return c.ShouldBindWith(obj, b)
+	config := &validator.Config{TagName: "validate"}
+	validate := validator.New()
+	return validate.Struct(obj)
+
 }
 
 // My own Error type that will help return my customized Error info
