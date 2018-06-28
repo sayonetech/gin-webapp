@@ -1,0 +1,16 @@
+language: go
+
+go:
+  - 1.10
+
+before_script:
+  - export PATH=$HOME/gopath/bin:$PATH
+
+before_install:
+  - make deps
+
+install:
+  - godep restore
+
+script:
+  - make test
