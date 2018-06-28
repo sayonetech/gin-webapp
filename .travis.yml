@@ -10,7 +10,7 @@ before_install:
   - make deps
 
 install:
-  - godep restore
+  - make build
 
 script:
   - make test
