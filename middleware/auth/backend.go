@@ -1,11 +1,11 @@
 package auth
 
 import (
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	log "github.com/sirupsen/logrus"
 	"go-webapp/config"
 	"go-webapp/models"
-
-	"github.com/jinzhu/gorm"
-	log "github.com/sirupsen/logrus"
 )
 
 //https://github.com/apexskier/httpauth/blob/master/auth.go

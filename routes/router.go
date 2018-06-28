@@ -1,35 +1,38 @@
 package routes
 
 import (
+	"github.com/gin-gonic/gin"
 	"go-webapp/config"
-	"go-webapp/handle"
 	"go-webapp/middleware/cors"
 	"go-webapp/middleware/log"
 	"go-webapp/middleware/request"
-
-	"github.com/gin-gonic/gin"
+	"go-webapp/middleware/session"
+	//	"os"
 	// proxy "github.com/chenhg5/gin-reverseproxy"
+	"github.com/getsentry/raven-go"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 //InitRouter Initialise router
 func InitRouter() *gin.Engine {
-	route := gin.New()
 
+	raven.SetDSN(config.GetEnv().SENTRY_URL)
+	route := gin.New()
+	//reads all environment variables and sets them to a map
 	//route.Use(gzip.Gzip(gzip.DefaultCompression))
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	if config.GetEnv().DEBUG {
-		route.Use(gin.Logger()) // Used in development mode, console print request records
-	}
-
-	route.Use(log.JSONLogMiddleware())
-	route.Use(gin.Recovery())
+	//var logger = loge.New()
+	//	Log := log.Logger{Writer: logger, ErrorLog: os.Stdout}
+	//route.Use(Log.JSONLogMiddleware())
+	//TODO: open hte files to whcih to write log files
+	//TODO: initialte the logger struct here and call the recovery function as a method
+	route.Use(log.Recovery()) // *custom recovery
 	route.Use(request.RequestID(request.RequestIDOptions{AllowSetting: false}))
-
 	route.Use(cors.CORS(cors.CORSOptions{}))
-	route.Use(handle.Errors()) // Error handling
-
+	//route.Use(handle.Errors()) // Error handling
+	route.Use(session.Sessions(store))
+	//route.Use(session.SessionMiddleWare())
 	registerAPIRouter(route)
 
 	// ReverseProxy
