@@ -33,10 +33,20 @@ type Env struct {
 
 var environs map[string]interface{}
 var enviornment Env
+var sessionConfig Config
 
 func init() {
 	if !enviornment.SET { // this needs to run only once
 		environs = Read()
+		sessionConfig = Config{
+			Secret:   []byte(environs["APP_SECRET"].(string)),
+			Name:     environs["SESSION_KEY"].(string),
+			Path:     "",
+			Domain:   environs["HOST"].(string),
+			MaxAge:   MaxAge,
+			Secure:   false,
+			HttpOnly: false,
+		}
 		enviornment = Env{
 			DEBUG: common.Getenv("DEBUG"),
 
@@ -67,16 +77,6 @@ func init() {
 
 func GetEnvirons() *map[string]interface{} {
 	return &environs
-}
-
-var sessionConfig = Config{
-	Secret:   []byte(GetEnv().APP_SECRET),
-	Name:     GetEnv().SESSION_KEY,
-	Path:     "",
-	Domain:   GetEnv().HOST,
-	MaxAge:   MaxAge,
-	Secure:   false,
-	HttpOnly: false,
 }
 
 //GetEnv get the current enviornment configuration

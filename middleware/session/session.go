@@ -76,6 +76,7 @@ func (store *Store) Encode(context *gin.Context, user models.User) (string, erro
 	if err != nil {
 		panic(err)
 	}
+
 	encrypted, err := encrypt(config.GetSessionConfig().Secret, userData)
 	if err != nil {
 
