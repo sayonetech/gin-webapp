@@ -32,10 +32,12 @@ func Sessions(store *Store) gin.HandlerFunc {
 }
 
 func User(c *gin.Context) Store {
+	//TODO
 	return FromContext(c)
 }
 
 func MustUser() gin.HandlerFunc {
+	//TODO
 	return func(c *gin.Context) {
 		//user := User(c)
 		/*switch {

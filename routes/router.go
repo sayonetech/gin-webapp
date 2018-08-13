@@ -1,12 +1,13 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"go-webapp/config"
 	"go-webapp/middleware/cors"
 	"go-webapp/middleware/log"
 	"go-webapp/middleware/request"
 	"go-webapp/middleware/session"
+
+	"github.com/gin-gonic/gin"
 	//	"os"
 	// proxy "github.com/chenhg5/gin-reverseproxy"
 	"github.com/getsentry/raven-go"
@@ -32,7 +33,7 @@ func InitRouter() *gin.Engine {
 	route.Use(cors.CORS(cors.CORSOptions{}))
 	//route.Use(handle.Errors()) // Error handling
 	route.Use(session.Sessions(store))
-	//route.Use(session.SessionMiddleWare())
+	route.Use(session.SessionMiddleWare())
 	registerAPIRouter(route)
 
 	// ReverseProxy
