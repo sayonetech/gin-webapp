@@ -69,30 +69,6 @@ func GetEnvirons() *map[string]interface{} {
 	return &environs
 }
 
-// var enviornment = Env{
-// 	DEBUG: common.Getenv("DEBUG"),
-
-// 	SERVER_PORT:       environs["SERVER_PORT"],
-// 	HOST:              os.Getenv("HOST"),
-// 	DATABASE_PORT:     os.Getenv("DATABASE_PORT"),
-// 	DATABASE_USERNAME: os.Getenv("DATABASE_USERNAME"),
-// 	DATABASE_PASSWORD: os.Getenv("DATABASE_PASSWORD"),
-// 	DATABASE_NAME:     os.Getenv("DATABASE_NAME"),
-
-// 	ACCESS_LOG:      common.Getenv("ACCESS_LOG"),
-// 	ACCESS_LOG_PATH: os.Getenv("ACCESS_LOG_PATH"),
-
-// 	ERROR_LOG:      common.Getenv("ERROR_LOG"),
-// 	ERROR_LOG_PATH: os.Getenv("ERROR_LOG_PATH"),
-
-// 	APP_SECRET:      os.Getenv("APP_SECRET"),
-// 	SESSION_KEY:     os.Getenv("SESSION_KEY"),
-// 	VERSION:         os.Getenv("VERSION"),
-// 	REDIS_HOST:      os.Getenv("REDIS_HOST"),
-// 	SESSION_OBJ_KEY: os.Getenv("SESSION_OBJ_KEY"),
-// 	SENTRY_URL:      os.Getenv("SENTRY_URL"),
-// }
-
 var sessionConfig = Config{
 	Secret:   []byte(GetEnv().APP_SECRET),
 	Name:     GetEnv().SESSION_KEY,
