@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/kurianCoding/envs"
 	"go-webapp/common"
 )
 
@@ -37,7 +36,7 @@ var enviornment Env
 
 func init() {
 	if !enviornment.SET { // this needs to run only once
-		environs = envs.Read()
+		environs = Read()
 		enviornment = Env{
 			DEBUG: common.Getenv("DEBUG"),
 
